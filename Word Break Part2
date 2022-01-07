@@ -1,0 +1,65 @@
+//https://practice.geeksforgeeks.org/problems/word-break-part-23249/1
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<string> op;
+
+bool isPresent(string t,vector<string>dict){
+    for(int i=0;i<dict.size();i++){
+        if(dict[i].compare(t) == 0){
+            // cout<<"found "<<dict[i]
+            // <<endl;
+            return true;
+
+        }
+    }
+        return false;
+
+}
+
+void wordbreakutil(string s,vector<string> dict,int n, string res){
+    // cout<<"res "<<res<<endl;
+    // cout<<"s "<<s<<endl;
+    for(int i=1;i<=n;i++){
+        string prefix = s.substr(0,i);
+        // if(i==n) cout<<"finished"<<endl;
+        if(isPresent(prefix,dict))
+        {
+            if(i==n){
+                res+=prefix;
+                op.push_back(res);
+                return;
+            }
+            wordbreakutil(s.substr(i,n-i),dict,n-i,res+prefix+" ");
+        }
+    }
+}
+ 
+void wordbreak(string s,vector<string> dict, int n){
+    wordbreakutil(s,dict,s.length(),"");
+ }
+
+int main()
+{
+    int n;cin>>n;
+    string s;cin>>s;
+    // cout<<s<<endl;
+    vector<string> dict(n);
+    for(int i=0;i<n;i++) cin>>dict[i];
+
+    // for(int i=0;i<n;i++) cout<<dict[i]<<" ";
+    // cout<<endl;
+    // string str = "dog";
+    // if(isPresent(str,dict)) cout<<"it is"<<endl;
+    // else cout<<"not present"<<endl;
+
+
+
+    wordbreak(s,dict,n);
+    
+    if(op.size() == 0) cout<<"Empty";
+    else for(int i=0;i<op.size();i++) cout<<op[i]<<" , ";
+
+}
