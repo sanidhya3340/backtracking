@@ -1,0 +1,87 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void printSudoku(int grid[][9]){
+    for(int i=0;i<9;i++){
+        for(int j=0;j<9;j++){
+            cout<<grid[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+bool isPossible(int grid[][9],int row,int col, int x){
+    // cout<<"returning"<<endl;
+    for(int j=0;j<9;j++){
+        if(grid[row][j] == x){
+            return false;
+        }
+    }
+
+    for(int i=0;i<9;i++){
+        if(grid[i][col] == x){
+            return false;
+        }
+    }
+
+    int xi = row / 3 * 3;
+    int yi = col / 3 * 3;
+
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if(grid[xi+i][yi+j] == x){
+                return false;
+            }
+        }
+    }
+    // cout<<"returning true"<<endl;
+    return true;
+
+}
+
+void solveSudoku(int grid[][9],int i,int j){
+    // cout<<"into demand"<<endl;
+    if(i == 9){
+        // cout<<"here I am"<<endl;
+        printSudoku(grid);
+        return;
+    }
+    
+    int ni=0,nj=0;
+    if(j == 8){
+        ni=i+1;
+        nj=0;
+    }else{
+        ni=i;
+        nj=j+1;
+    }
+    if(grid[i][j] != 0){
+        solveSudoku(grid,ni,nj);
+    }
+    else{
+        for(int ps=1;ps<=9;ps++){
+            if(isPossible(grid,i,j,ps)){
+                grid[i][j] = ps;
+                solveSudoku(grid,ni,nj);
+                grid[i][j] = 0;
+            }
+        }
+    }
+
+}
+
+int main(){
+    int grid[9][9];
+    for(int i=0;i<9;i++){
+        for(int j=0;j<9;j++){
+            cin>>grid[i][j];
+        }
+    }
+
+    // printSudoku(grid);
+
+
+    // cout<<"stil prinitng something"<<endl;
+
+    solveSudoku(grid,0,0);
+}
