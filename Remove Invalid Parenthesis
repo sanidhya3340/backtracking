@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool isValidString(string str){
+    int count=0;
+    for(int i=0;i<str.length();i++){
+        if(str[i] == '(')
+            count++;
+        else if(str[i] == ')')
+            count--;
+
+        if(count<0) return false;
+    }
+
+    return (count == 0);
+}
+
+bool isParenthesis(char c){
+    if(c == '(' || c == ')') return true;
+    return false;
+}
+
+void printQueue(queue<string>q){
+    while(!q.empty()){
+        cout<<" "<<q.front();
+        q.pop();
+    }
+    cout<<endl;
+}
+
+void removeinvalidparenthesis(string str){
+    set<string>visit;
+    queue<string> q;
+    string temp;
+    bool level;
+
+    q.push(str);
+    visit.insert(str);
+
+    while(!q.empty()){
+        // printQueue(q);
+        str = q.front(); q.pop();
+        if(isValidString(str)){
+            cout<<str<<" "<<endl;
+            level=true;
+        }
+        if(level) continue;
+
+        for(int i=0;i<str.length();i++){
+            if(!isParenthesis(str[i])){
+                continue;
+            }
+            temp = str.substr(0,i) + str.substr(i+1);
+            if(visit.find(temp) == visit.end()){
+                q.push(temp);
+                visit.insert(temp);
+            }
+        }
+    }
+}
+
+int main(){
+    string express = "()()()";
+    removeinvalidparenthesis(express);
+}
