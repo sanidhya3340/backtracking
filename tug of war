@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int mindef=INT_MAX;
+vector<int>fset1;
+vector<int>fset2;
+
+void solve(int arr[],int videx,vector<int>set1,vector<int>set2,int soset1,
+            int soset2,int n){
+    // cout<<n<<" \n";
+    if(videx==n){
+        int delta=abs(soset1-soset2);
+        if(delta<mindef){
+            mindef=delta;
+            fset1=set1;
+            fset2=set2;
+            // cout<<set1[0]<<endl;
+            // cout<<videx<<" reached here\n";
+        }
+        return;
+    }
+    
+    if(set1.size() < (n+1)/2){
+        set1.push_back(arr[videx]);
+        solve(arr,videx+1,set1,set2,soset1+arr[videx],soset2,n);
+        set1.pop_back();
+    }
+    
+    if(set2.size() < (n+1)/2){
+        set2.push_back(arr[videx]);
+        solve(arr,videx+1,set1,set2,soset1,soset2+arr[videx],n);
+        set2.pop_back();
+    }
+}
+
+int main() {
+	int n;cin>>n;
+	int arr[n];
+	for(int i=0;i<n;i++) cin>>arr[i];
+	vector<int>set1;
+	vector<int>set2;
+	
+	solve(arr,0,set1,set2,0,0,n);
+	
+	cout<<"printing fset1:\n";
+	for(int i=0;i<fset1.size();i++){
+	    cout<<fset1[i]<<" ";
+	}
+	cout<<endl;
+	for(int i=0;i<fset2.size();i++){
+	    cout<<fset2[i]<<" ";
+	}
+	
+	return 0;
+}
