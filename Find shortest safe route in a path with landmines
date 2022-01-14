@@ -1,0 +1,99 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int m,n;
+
+int rowNum[4] = {0,1,-1,0};
+int colNum[4]={1,0,0,-1};
+
+bool isSafe(vector<vector<int>>arr,vector<vector<int>>visited,int x,int y){
+    if (arr[x][y] == 0 || visited[x][y]==1)
+        return false;
+ 
+    return true;
+}
+
+bool isValid(int x,int y){
+    return (x>=0 && x<n && y>=0 && y<m);
+}
+
+void markunsafe(vector<vector<int>>&arr){
+    for(int i=0;i<arr.size();i++){
+        for(int j=0;j<arr[i].size();j++){
+            if(arr[i][j] == 0){
+                for(int k=0;k<4;k++){
+                    if(isValid(i+rowNum[k],j+colNum[k])){
+                        arr[i+rowNum[k]][j+colNum[k]]=-1;
+                    }
+                }
+            }
+        }
+    }
+
+    for(int i=0;i<arr.size();i++){
+        for(int j=0;j<arr[0].size();j++){
+            if(arr[i][j]==-1){
+                arr[i][j]=0;
+            }
+        }
+    }
+}
+
+void findShotestPathUtil(vector<vector<int>>&arr,vector<vector<int>>&visited,
+    int i,int j,int &min_dist,int dist){
+    if(j == arr[0].size()-1){
+        min_dist = min(dist,min_dist);
+        return;
+    }
+    if(dist>min_dist) return;
+
+    visited[i][j]=1;
+    for(int k=0;k<4;k++){
+        if(isValid(i+rowNum[k],j+colNum[k]) && isSafe(arr,visited,i+rowNum[k],j+colNum[k])){
+            findShotestPathUtil(arr,visited,i+rowNum[k],j+colNum[k],min_dist,dist+1);
+        }
+    }
+    visited[i][j]=0;
+}
+
+void findShotestPath(vector<vector<int>> &arr){
+    int min_dist=INT_MAX;
+    markunsafe(arr);
+
+    for(int i=0;i<arr.size();i++){
+        if(arr[i][0]==1){
+            vector<vector<int>>visited(n,vector<int>(m,0));
+            findShotestPathUtil(arr,visited,i,0,min_dist,0);
+            if(min_dist == m-1)
+                break;
+        }
+    }
+
+    if(min_dist == INT_MAX){
+        cout<<"path not possible";
+    } else{
+        cout<<"min dist "<<min_dist;
+    }
+    
+}
+
+int main()
+{
+    cin>>n>>m;
+    vector<vector<int>>arr(n,vector<int>(m));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cin>>arr[i][j];
+        }
+    }
+    findShotestPath(arr);
+    
+    // for(int i=0;i<arr.size();i++){
+    //     for(int j=0;j<arr[i].size();j++){
+    //         cout<<arr[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+
+}
+
