@@ -1,0 +1,93 @@
+// { Driver Code Starts
+//Initial template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+ // } Driver Code Ends
+//User function template for C++
+
+class Solution {
+  public:
+    //Function to return a list of indexes denoting the required 
+    //combinations whose sum is equal to given number.
+    vector<vector<int>>op;
+    
+    void util(vector<int>arr,int index,int sum,vector<int>res){
+        if(index==arr.size()){
+            if(sum==0){
+                // sort(res.begin(),res.end());
+                op.push_back(res);
+            }
+            return;
+        }
+        
+        if(arr[index]<=sum){
+            res.push_back(arr[index]);
+            util(arr,index,sum-arr[index],res);
+            res.pop_back();
+        }
+        util(arr,index+1,sum,res);
+    }
+    
+    vector<vector<int> > combinationSum(vector<int> &arr, int sum) {
+        // Your code here
+        vector<int>::iterator it;
+        sort(arr.begin(),arr.end());
+        sort(arr.begin(),arr.end());
+        it =  unique(arr.begin(),arr.end());
+        arr.resize(distance(arr.begin(),it));
+        // sort(arr.begin(),arr.end(),greater<int>());
+        vector<int>res;
+        util(arr,0,sum,res);
+        // for(int i=0;i<op.size();i++){
+        //     for(int j=i+1;j<op.size();j++){
+        //         if(op[i].size()<op[j].size()){
+        //             vector<int>temp=op[i];
+        //             op[i]=op[j];
+        //             op[j]=temp;
+        //         }
+        //     }
+        // }
+        return op;
+    }
+};
+
+// { Driver Code Starts.
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        vector<int> A;
+        for(int i=0;i<n;i++){
+            int x;
+            cin>>x;
+            A.push_back(x);
+        }   
+        int sum;
+        cin>>sum;
+        Solution ob;
+        vector<vector<int>> result = ob.combinationSum(A, sum);
+        if(result.size()==0){
+            cout<<"Empty";
+        }
+        for(int i=0;i<result.size();i++){
+            cout<<'(';
+            for(int j=0;j<result[i].size();j++){
+                cout<<result[i][j];
+                if(j<result[i].size()-1)
+                    cout<<" ";
+            }
+            cout<<")";
+        }
+        cout<<"\n";
+    }
+}     // } Driver Code Ends
+
+
+// 5
+// 8 1 8 6 8
+// 12
