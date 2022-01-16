@@ -1,0 +1,75 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int m,n;
+
+vector<vector<int>>op;
+
+int xM[4] = {0,1,-1,0};
+int yM[4] = {1,0,0,-1};
+
+bool isValid(int x,int y){
+    return (x>=0 && y>=0 && x<m && y<n);
+}
+
+void solve(vector<vector<int>>mat,vector<vector<int>>visited,int i,int j,vector<int>res){
+    // cout<<dist<<" "<<i<<" "<<j<<endl;
+    if(i == m-1 && j == n-1){
+        // cout<<"here "<<dist<<endl;
+        op.push_back(res);
+        return;
+    }
+
+    for(int k=0;k<4;k++){
+        if(isValid(i+xM[k],j+yM[k]) && !visited[i+xM[k]][j+yM[k]]){
+
+            visited[i+xM[k]][j+yM[k]] = 1;
+            res.push_back(mat[i+xM[k]][j+yM[k]]);
+            solve(mat,visited,i+xM[k],j+yM[k],res);
+            visited[i+xM[k]][j+yM[k]] = 0;
+            res.pop_back();
+        }
+    }
+}
+
+
+int main(){
+    cin>>m>>n;
+    vector<vector<int>>mat(m,vector<int>(n));
+
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            cin>>mat[i][j];
+        }
+    }
+    vector<vector<int>>visited(m, vector<int>(n,0));
+
+    // for(int i=0;i<m;i++){
+    //     for(int j=0;j<n;j++){
+    //         cout<<visited[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+
+
+    int di = m-1;
+    int dj = n-1;
+
+    vector<int>res;
+    visited[0][0]=1;
+    res.push_back(mat[0][0]);
+    solve(mat,visited,0,0,res);
+
+    if(op.size()==0){
+        cout<<"Path is not possible";
+    }else{
+        for(int i=0;i<op.size();i++){
+            for(int j=0;j<op[i].size();j++){
+                cout<<op[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+    }
+    return 0;
+}
