@@ -1,0 +1,61 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int m,n;
+
+int m_dist=INT_MIN;
+int xM[4] = {0,1,-1,0};
+int yM[4] = {1,0,0,-1};
+
+bool isValid(int x,int y){
+    return (x>=0 && y>=0 && x<m && y<n);
+}
+
+void solve(vector<vector<int>>mat,vector<vector<int>>visited,int i,int j,int di,int dj,int dist){
+    // cout<<dist<<" "<<i<<" "<<j<<endl;
+    if(i==di && j==dj){
+        // cout<<"here "<<dist<<endl;
+        if(dist>m_dist){
+            m_dist=dist;
+        }
+        return;
+    }
+
+    for(int k=0;k<4;k++){
+        if(isValid(i+xM[k],j+yM[k]) && !visited[i+xM[k]][j+yM[k]] && mat[i+xM[k]][j+yM[k]] != 0){
+            visited[i+xM[k]][j+yM[k]] = 1;
+            solve(mat,visited,i+xM[k],j+yM[k],di,dj,dist+1);
+            visited[i+xM[k]][j+yM[k]] = 0;
+
+        }
+    }
+}
+
+int main(){
+    cin>>m>>n;
+    vector<vector<int>>mat(m,vector<int>(n));
+
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            cin>>mat[i][j];
+        }
+    }
+    vector<vector<int>>visited(m, vector<int>(n,0));
+
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            cout<<visited[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+
+    int di,dj;
+    cin>>di>>dj;
+
+    solve(mat,visited,0,0,di,dj,0);
+
+    cout<<m_dist;
+    return 0;
+}
