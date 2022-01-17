@@ -1,0 +1,42 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+
+void solve(string str,string res,int &k){
+    // cout<<"here "<<res<<endl;
+    if(str.size()==0){
+        k--;
+        // cout<<"here1 "<<k<<endl;
+        if(k==0){
+        cout<<res<<endl;
+     
+    }
+
+        return;
+    }
+
+    
+
+    for(int i=0;i<str.size();i++){
+        res.push_back(str[i]);
+        char temp=str[i];
+        str.erase(i,1);
+        // cout<<"s "<<str<<endl;
+        solve(str,res,k);
+        if(k==0) return;
+        str.insert(i,1,temp);
+        // cout<<"str "<<str<<endl;
+        res.pop_back();
+    }
+}
+
+int main(){
+    int n,k;cin>>n>>k;
+    string str;
+    for(int i=1;i<=n;i++){
+        str.push_back(i+'0');
+    }
+
+    string res;
+    solve(str,res,k);
+}
