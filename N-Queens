@@ -1,0 +1,40 @@
+//N-Queens
+#include<bits/stdc++.h>
+using namespace std;
+
+
+void solve(vector<vector<bool>>board,int row,bool cols[],bool ndiog[],bool rdiog[],string asf){
+
+    if(row==board.size()){
+        cout<<asf<<"  ";
+        return;
+    }
+
+    for(int i=0;i<board[row].size();i++){
+        if(cols[i]==false && ndiog[row+i]==false && rdiog[row-i+board.size()-1]==false){
+            board[row][i]=true;
+            rdiog[row-i+board.size()-1]=true;
+            ndiog[row+i]=true;
+            cols[i]=true;
+            solve(board,row+1,cols,ndiog,rdiog,asf+to_string(row)+"-"+to_string(i)+",");
+            board[row][i]=false;
+            rdiog[row-i+board.size()-1]=false;
+            ndiog[row+i]=false;
+            cols[i]=false;
+        }
+    }
+
+}
+
+
+int main()
+{
+    int n=4;
+    vector<vector<bool>>board(n,vector<bool>(n,false));
+    bool cols[n];
+    bool ndiog[2*n-1];
+    bool rdiog[2*n-1];
+
+    solve(board,0,cols,ndiog,rdiog,"");
+    return 0;
+}
