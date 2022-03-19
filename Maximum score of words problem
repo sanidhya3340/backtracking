@@ -1,0 +1,64 @@
+//Maximum score of words problem
+#include<bits/stdc++.h>
+using namespace std;
+
+int solve(vector<string>words,vector<int>freq,vector<int>score,int idx){
+    if(idx==words.size()){
+        // cout<<words.size();
+        return 0;
+    }
+    // cout<<freq.size()<<endl;
+    int sword=0;
+    string word = words[idx];
+    int ns = solve(words,freq,score,idx+1);
+    bool flag=true;
+
+    for(int i=0;i<word.length();i++){
+        char ch = word[i];
+        if(freq[ch-'a']==0){
+            flag=false;
+        }
+        freq[ch-'a']--;
+        sword+=score[ch-'a'];
+    }
+    int syes=0;
+    if(flag){
+        syes=sword+solve(words,freq,score,idx+1);
+    }
+
+    for(int i=0;i<word.length();i++){
+        char ch=word[i];
+        freq[ch-'a']++;
+    }
+
+    return max(ns,syes);
+
+}
+
+
+int main()
+{
+    vector<string>words;
+    int n;cin>>n;
+    for(int i=0;i<n;i++){
+        string ss;cin>>ss;
+        words.push_back(ss);
+    };
+    vector<char>letters;cin>>n;
+    for(int i=0;i<n;i++){
+        char ch;cin>>ch;
+        letters.push_back(ch);
+    }
+    vector<int>score;
+    for(int i=0;i<26;i++){
+        int nn;cin>>nn;
+        score.push_back(nn);
+    }
+    vector<int>freq(26);
+    for(int i=0;i<letters.size();i++){
+        freq[letters[i]-'a']++;
+    }
+    cout<<solve(words,freq,score,0);
+    // cout<<"solvin";
+    return 0;
+}
