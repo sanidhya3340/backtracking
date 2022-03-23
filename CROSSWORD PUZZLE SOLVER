@@ -1,0 +1,148 @@
+//CROSSWORD PUZZLE SOLVER
+#include<bits/stdc++.h>
+using namespace std;
+
+void display(vector<string>arr){
+    for(int i=0;i<arr.size();i++){
+        for(int j=0;j<arr[0].size();j++){
+            cout<<arr[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+bool canPlaceHorizontally(vector<string>arr,string word,int i,int j){
+    if(j-1>=0 && arr[i][j-1]!='+'){
+        return false;
+    }
+    else if(j+word.length()<arr[0].size() && arr[i][j+word.length()]!='+'){
+        return false;
+    }
+
+    for(int jj=0;jj<word.length();jj++){
+        if(jj>=arr[0].size()){
+            return false;
+        }
+        if(arr[i][j+jj]=='_' || arr[i][j+jj]==word[jj]){
+            continue;
+        }
+        else{
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool canPlaceVertically(vector<string>arr,string word,int i,int j){
+    if(i-1>=0 && arr[i-1][j]!='+'){
+        return false;
+    }
+    else if(i+word.length()<arr.size() && arr[i+word.length()][j]!='+'){
+        return false;
+    }
+
+    for(int ii=0;ii<word.length();ii++){
+        if(ii>=arr.size()){
+            return false;
+        }
+        if(arr[i+ii][j]=='_' || arr[i+ii][j]==word[ii]){
+            continue;
+        }
+        else{
+            return false;
+        }
+    }
+
+    return true;
+}
+
+vector<bool> placeHorizontally(vector<string>&arr,string word,int i,int j){
+    vector<bool> weplaced(word.size(),false);
+
+    for(int jj=0;jj<word.length();jj++){
+        if(arr[i][j+jj]=='_'){
+            arr[i][j+jj]=word[jj];
+            weplaced[jj]=true;
+        }
+    }
+
+    return weplaced;
+}
+
+vector<bool> placeVertically(vector<string>&arr,string word,int i,int j){
+    vector<bool> weplaced(word.size(),false);
+
+    for(int ii=0;ii<word.length();ii++){
+        if(arr[i+ii][j]=='_'){
+            arr[i+ii][j]=word[ii];
+            weplaced[ii]=true;
+        }
+    }
+
+    return weplaced;
+}
+
+void unplaceHorizontally(vector<string>&arr,vector<bool>weplaced,int i,int j){
+    for(int jj=0;jj<weplaced.size();jj++){
+        if(weplaced[jj]==true){
+            arr[i][j+jj]='_';
+        }
+    }
+}
+
+void unplaceVertically(vector<string>&arr,vector<bool>weplaced,int i,int j){
+    for(int ii=0;ii<weplaced.size();ii++){
+        if(weplaced[ii]==true){
+            arr[i+ii][j]='_';
+        }
+    }
+}
+
+void solution(vector<string>&arr,vector<string>words,int videx){
+    // cout<<words[videx]<<" "<<videx<<endl;
+    if(videx==words.size()){
+        display(arr);
+        return;
+    }
+
+
+    string word = words[videx];
+
+    for(int i=0;i<arr.size();i++){
+        for(int j=0;j<arr[0].size();j++){
+            if(arr[i][j]=='_' || arr[i][j]==word[0]){
+                if(canPlaceHorizontally(arr,word,i,j)){
+                    vector<bool>weplaced=placeHorizontally(arr,word,i,j);
+                    // cout<<"to be called hor "<<videx+1<<endl;
+                    solution(arr,words,videx+1);
+                    unplaceHorizontally(arr,weplaced,i,j);
+                }
+                if(canPlaceVertically(arr,word,i,j)){
+                    vector<bool>weplaced=placeVertically(arr,word,i,j);
+                    // cout<<"to be called ver "<<videx+1<<endl;
+                    solution(arr,words,videx+1);
+                    unplaceVertically(arr,weplaced,i,j);
+                }
+            }
+        }
+    }
+}
+
+int main(){
+    vector<string>arr;
+    for(int i=0;i<10;i++){
+        string temp;cin>>temp;
+        arr.push_back(temp);
+    }
+
+    vector<string>words;
+    for(int i=0;i<4;i++){
+        string temp;cin>>temp;
+        words.push_back(temp);
+    }
+
+    solution(arr,words,0);
+
+    return 0;
+}
