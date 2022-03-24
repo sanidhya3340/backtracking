@@ -1,0 +1,89 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool flag=false;
+
+int getInt(string s ,map<char,int> mp){
+    string num="";
+    for(int i=0;i<s.length();i++){
+        
+        num+=to_string(mp[s[i]]);
+        // cout<<num<<" "<<mp[s[i]]<<endl;
+    }
+
+    stringstream geek(num);
+    int x = 0;
+    geek >> x;
+
+    return x;
+}
+
+void printmap(map<char,int>mp){
+    for (auto itr = mp.begin(); itr != mp.end(); ++itr) {
+        cout << itr->first
+             << '\t' << itr->second << '\n';
+    }
+}
+
+void solution(string unique,int videx,map<char,int> charIntMap,bool usedNumbers[],string s1,string s2 ,string s3){
+    // cout<<unique<<" "<<videx<<endl;
+    if(videx==unique.length()){
+        int num1=getInt(s1,charIntMap);
+        int num2=getInt(s2,charIntMap);
+        int num3=getInt(s3,charIntMap);
+
+        if(num1+num2==num3){
+            printmap(charIntMap);
+            flag=true;
+        cout<<"here"<<endl;
+        }
+        return;
+    }
+    
+    char ch=unique[videx];
+    
+    for(int i=0;i<=10;i++){
+        if(usedNumbers[i]==false){
+            if(flag==true) return;
+            usedNumbers[i]=true;
+            charIntMap[ch]=i;
+            solution(unique,videx+1,charIntMap,usedNumbers,s1,s2,s3);
+            charIntMap[ch]=-1;
+            usedNumbers[i]=false;
+        }
+    }
+}
+
+int main(){
+    string s1,s2,s3;
+    cin>>s1>>s2>>s3;
+    map<char,int>charIntMap;
+    // cout<<charIntMap[s1[0]];
+    string unique="";
+    for(int i=0;i<s1.length();i++){
+        if(charIntMap.find(s1[i])==charIntMap.end()){
+            charIntMap.insert({s1[i],-1});
+            unique.push_back(s1[i]);
+        }
+    }
+    for(int i=0;i<s2.length();i++){
+        if(charIntMap.find(s2[i])==charIntMap.end()){
+            charIntMap.insert({s2[i],-1});
+            unique.push_back(s2[i]);
+        }
+    }
+    for(int i=0;i<s3.length();i++){
+        if(charIntMap.find(s1[i])==charIntMap.end()){
+            charIntMap.insert({s3[i],-1});
+            unique.push_back(s3[i]);
+        }
+    }
+    // cout<<unique<<" "<<unique.length()<<endl;
+    bool usedNumbers[10];
+    for(int i=0;i<10;i++){
+        usedNumbers[i]=false;
+    }
+    solution(unique,0, charIntMap, usedNumbers, s1, s2 , s3);
+    // printmap(charIntMap);
+    return 0;
+}
