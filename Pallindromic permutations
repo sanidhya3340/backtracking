@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void permutation(int cs,int ts,map<char,int>&fmap,char oddc,string asf){
+    map<char,int> :: iterator itr;
+    
+    if(cs>ts){
+        string rev="";
+        for(int i=asf.length()-1;i>=0;i--){
+            rev+=asf[i];
+        }
+        string res=asf;
+        if(oddc!='z'){
+            res+=oddc;
+        }
+        res+=rev;
+        cout<<res<<endl;
+        return;
+    }
+    
+    for(itr=fmap.begin();itr!=fmap.end();++itr){
+        int freq=fmap[itr->first];
+        if(freq>0){
+            fmap[itr->first]=freq-1;
+            permutation(cs+1, ts,fmap,oddc,asf+itr->first);
+            fmap[itr->first]=freq;
+        }
+    }
+}
+
+int main()
+{
+    string str="aabbc";
+    map<char,int>fmap;
+    for(int i=0;i<str.length();i++){
+        if(fmap.find(str[i])==fmap.end()){
+            fmap[str[i]]=1;
+        }else{
+            int of=fmap[str[i]];
+            fmap[str[i]]=of+1;
+        }
+    }
+
+    map<char,int>::iterator itr;
+
+    char odd='z';
+    int odss=0;
+    int len=0;
+
+    for(itr=fmap.begin();itr!= fmap.end();++itr){
+        
+
+             int freq=fmap[itr->first];
+
+             if(freq%2!=0){
+                odd=itr->first;
+                odss++;
+             }
+             fmap[itr->first]=freq/2;
+             len+=freq/2;
+    }
+    if(odss>1){
+        cout<<"not possible";
+    }
+    else{
+        permutation(1,len,fmap,odd,"");
+    }
+
+    return 0;
+}
