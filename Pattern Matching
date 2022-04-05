@@ -1,0 +1,55 @@
+//Pattern Matching
+#include<bits/stdc++.h>
+using namespace std;
+
+
+void solution(string str,string pattern,map<char,string>mp,string op){
+
+if(pattern.length()==0){
+    if(str.length()==0){
+        map<char,string>::iterator itr;
+        
+        for(itr=mp.begin();itr!=mp.end();itr++){
+            cout << '\t' << itr->first << '\t' << itr->second
+             << '\n';
+        }
+        cout<<endl;
+    }
+    return;
+}
+    char ch=pattern[0];
+    string rop = pattern.substr(1); //rest of pattern
+    // cout<<rop<<endl;
+    if(mp.find(ch)!=mp.end()){
+        string previousmapping = mp[ch];
+        if(str.length() >= previousmapping.length()){
+            string left = str.substr(0,previousmapping.length());
+            string right = str.substr(previousmapping.length());
+            if(previousmapping == left){
+                solution(right,rop,mp,op);
+            }
+        }
+    }
+    else{
+        for(int i=0;i<str.length();i++){
+            string left = str.substr(0,i+1);
+            string right = str.substr(i+1);
+            // cout<<left<<" "<<right<<endl;
+            
+            mp[ch]=left;
+            solution(right,rop,mp,op);
+            mp.erase(ch);
+        }
+    }
+}
+
+
+int main()
+{
+    string pattern = "abcb";
+    string str="mzaddytzaddy";
+
+    map<char,string>mp;
+
+    solution(str,pattern,mp,pattern);
+}
