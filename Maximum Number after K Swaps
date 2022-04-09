@@ -1,0 +1,74 @@
+//Maximum Number after K Swaps
+#include<bits/stdc++.h>
+using namespace std;
+string maxx;
+
+int convert(string s){
+    stringstream geek(s);
+ 
+    int x = 0;
+    geek >> x;
+
+    return x;
+}
+
+string swap(string str,int i,int j){
+
+    string res=str;
+
+    char temp = res[i];
+    res[i]=res[j];
+    res[j]=temp;
+
+    // cout<<"Res "<<res<<endl;
+
+    return res;
+
+
+    // char ith = str[i];
+    // char jth = str[j];
+
+    // string left = str.substr(0,i);
+    // // cout<<"left "<<i<<left<<endl;
+    // string middle = str.substr(i+1,j);
+    // // cout<<"m "<<j<<middle<<endl;
+    // string right = str.substr(j+1);
+    // // cout<<"r "<<right<<endl;
+
+    // string res = left +jth +middle+ith+right;
+    // // cout<<res<<endl;
+    // return res;
+}
+
+void findMax(string str,int k){
+
+    // cout<<str<<endl;
+
+    if(convert(str)>convert(maxx)){
+        maxx=str;
+    }
+
+    if(k==0){
+        return;
+    }
+
+    for(int i=0;i<str.length()-1;i++){
+        for(int j=i+1;j<str.length();j++){
+            if(str[j]>str[i]){
+                string swapped= swap(str,i,j);
+                findMax(swapped,k-1);
+            }
+        }
+    }
+}
+
+int main()
+{
+    string str="1234567";
+    int k = 3;
+
+    maxx=str; 
+    findMax(str,k);
+    cout<<maxx;
+    return 0;
+}
