@@ -1,0 +1,30 @@
+//COombinations
+#include<bits/stdc++.h>
+using namespace std;
+
+void solution(int cb, int tb, int ssf, int ts, string asf){
+    //cb = current boxes
+    //tb = total number of boxes
+    //ssf = selection so far
+    //ts = total selections
+    //answer so far
+
+    if(cb>tb){
+        if(ssf==ts){
+            cout<<asf<<endl;
+        }
+        return;
+    }
+
+    
+    solution(cb+1,tb,ssf+1,ts,asf+ "i");
+    solution(cb+1,tb,ssf,ts,asf+ "_");
+}
+
+int main()
+{
+    int nboxes;cin>>nboxes;
+    int ritems;cin>>ritems;
+    solution(1, nboxes, 0, ritems, "");
+    return 0;
+}
