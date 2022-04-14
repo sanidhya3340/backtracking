@@ -1,0 +1,54 @@
+//Queens Combinations - 2
+#include<bits/stdc++.h>
+using namespace std;
+
+void solution(int qsf,int n,bool chess[][2],int i,int j){
+    // cout<<n<<" "<<qsf<<" "<<i<<" "<<j<<endl;
+    
+    if(qsf == n){
+        for(int row=0;row<n;row++){
+            for(int col = 0;col<n;col++){
+                if(chess[row][col] == true){
+                    cout<<"q";
+                }
+                else{
+                    cout<<"_";
+                }
+            }
+            cout<<endl;
+        }
+        cout<<endl;
+        return;
+    }
+
+    for(int col = j+1;col<n;col++){
+            chess[i][col] = true;
+            solution(qsf+1,n,chess,i,col);
+            chess[i][col] = false;
+    }
+
+    for(int row = i+1;row<n;row++){
+        for(int col = 0;col<n;col++){
+                chess[row][col] = true;
+                solution(qsf+1,n,chess,row,col);
+                chess[row][col] = false;
+        }
+    }
+
+
+}
+
+
+int main()
+{
+    int n = 2;
+    bool chess[2][2];
+    
+    for(int i=0;i<2;i++){
+        for(int j=0;j<2;j++){
+            chess[i][j] = false;
+        }
+    }
+
+    solution(0,n,chess,0,-1);
+}
