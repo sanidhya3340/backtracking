@@ -1,0 +1,52 @@
+//K Length Words - 1 
+#include<bits/stdc++.h>
+using namespace std;
+
+void solution(int videx,string ustr,int ssf, int ts, char spots[])
+{
+if(videx == ustr.length()){
+    if(ssf == ts){
+        for(int i=0;i<ts;i++){
+            cout<<spots[i];
+        }
+        cout<<endl;
+    }
+    return;
+}
+
+    for(int i=0;i<ts;i++){
+        if(spots[i]== '_'){
+            spots[i] = ustr[videx];
+            solution(videx+1,ustr,ssf+1,ts,spots);
+            spots[i]='_';
+        }
+    }
+
+    solution(videx+1,ustr,ssf,ts,spots);
+}
+
+int main()
+{
+    string str = "abcabc";
+    int k = 2;
+
+    set<char> unique ;
+
+    string ustr = "";
+
+    for(int i=0;i<str.length();i++){
+        if(unique.find(str[i]) == unique.end()){
+            unique.insert(str[i]);
+            ustr+=str[i];
+        }
+    }
+
+    // cout<<ustr<<endl;
+
+// (int videx,string ustr,int ssf, int ts, char spots[])
+    char spots[k] ;
+    for(int i=0;i<k;i++){
+        spots[i]= '_';
+    }
+    solution(0,ustr,0,k,spots);
+}
