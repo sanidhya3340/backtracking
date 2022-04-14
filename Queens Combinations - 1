@@ -1,0 +1,42 @@
+//Queens Combinations - 1
+#include<bits/stdc++.h>
+using namespace std;
+
+void solution(int r,int c,int n,string asf,int qsf){
+    if(r == n){
+        if(qsf == n){
+            cout<<asf<<endl;
+        }
+        return;
+    }
+
+    int nr,nc;
+
+    string yasf = "";
+    string nasf = "";
+
+    if(c==n-1){
+        nc = 0;
+        nr = r+1;
+        yasf = asf + "q\n";
+        nasf = asf + "_\n";
+
+    } else{
+        nc = c+1;
+        nr = r;
+        yasf = asf + "q";
+        nasf = asf + "_";
+    }
+
+    solution(nr,nc,n,yasf,qsf+1);
+    solution(nr,nc,n,nasf,qsf);
+
+}
+
+
+int main()
+{
+    int n = 2;
+
+    solution(0,0,n,"",0);
+}
