@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool withinboundary(int i,int j,vector<vector<int>>&mat){
+        if(i>=mat.size() || j>=mat[0].size() || mat[i][j]==0) return false;
+        return true;
+    }
+    bool util(vector<vector<int>>&mat,vector<vector<int>>&ans,int i,int j){
+        
+        if(i==mat.size()-1 && j == mat[0].size()-1){
+             ans[i][j]=1;
+             return true;
+        }
+        
+        if(withinboundary(i,j,mat)){
+            ans[i][j]=1;
+            for(int k=1;k<=mat[i][j];k++){
+                if(util(mat,ans,i,j+k)) return true;
+                if(util(mat,ans,i+k,j)) return true;
+            }
+            ans[i][j]=0;
+        }
+        
+        return false;
+    }
+	vector<vector<int>> ShortestDistance(vector<vector<int>>&mat){
+	   // Code here
+	   vector<vector<int>>res(mat.size(),vector<int>(mat[0].size(),0));
+	   
+	   if(!util(mat,res,0,0))
+	    return {{-1}};
+	   
+	   return res;
+	   
+	}
+
+};
